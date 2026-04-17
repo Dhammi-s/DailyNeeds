@@ -1,0 +1,31 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: #0f172a;
+  color: white;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+  }
+
+.login-btn {
+  background: #22c55e;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  color: white;
+}

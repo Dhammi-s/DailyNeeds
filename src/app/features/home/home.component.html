@@ -1,0 +1,123 @@
+<div class="landing-page">
+  <nav class="navbar">
+    <div class="logo">
+      <img class="logo" src="/logo.jpg" alt="DN Logo"> <span>Daily Needs</span>
+    </div>
+    <div class="nav-links">
+      <a href="#">Services</a>
+      <a href="#">How it Works</a>
+      <a href="#">Become a Pro</a>
+    </div>
+    <div class="nav-auth">
+      <button class="btn-login">Log In</button>
+      <button class="btn-signup">Sign Up</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Home Services, <br><span class="text-primary">On Demand</span></h1>
+      <p>Connect with trusted local professionals for all your home service needs. From repairs to renovations, we've got you covered.</p>
+      <div class="hero-btns">
+        <button class="btn-fill">Book a Service</button>
+        <button class="btn-outline">Become a Pro</button>
+      </div>
+      <div class="search-box">
+        <i class="search-icon">🔍</i>
+        <input type="text" placeholder="Search for services or professionals...">
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="/electrician-hero.png" alt="Electrician">
+      <div class="trust-badge">
+        <span class="stars">⭐⭐⭐⭐⭐</span> Trusted by 50,000+ customers
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-subtitle">Professional help for every home need</p>
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let s of services" [style.background-image]="'url('+s.img+')'">
+        <div class="card-overlay">
+          <div class="icon-box" [style.background-color]="s.color">
+            <i [class]="s.icon"></i>
+          </div>
+          <h3>{{s.name}}</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-us">
+    <h2 class="section-title">Why Choose Daily Needs</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="f-icon">🛡️</div>
+        <h4>Verified Professionals</h4>
+        <p>All service providers are background-checked and verified.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">⏱️</div>
+        <h4>Quick Response</h4>
+        <p>Get matched with available professionals within minutes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">🏅</div>
+        <h4>Quality Guaranteed</h4>
+        <p>100% satisfaction guarantee or your money back.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <h2 class="section-title">What Our Customers Say</h2>
+    <div class="testi-grid">
+      <div class="testi-card" *ngFor="let t of testimonials">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>"{{t.feedback}}"</p>
+        <div class="user-info">
+          <div class="avatar"></div>
+          <div>
+            <strong>{{t.name}}</strong>
+            <small>{{t.role}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <h2>Ready to get started?</h2>
+    <p>Join thousands of satisfied customers today</p>
+    <button class="btn-white">Book Your First Service</button>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="logo"><span>DN</span> Daily Needs</div>
+        <p>Your trusted partner for all home services</p>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <a href="#">Electrician</a>
+        <a href="#">Plumbing</a>
+        <a href="#">Carpentry</a>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 Daily Needs. All rights reserved.</div>
+  </footer>
+</div>

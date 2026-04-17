@@ -1,0 +1,206 @@
+/* Layout & Spacing */
+.landing-page {
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+section {
+  padding: 80px 10%;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+  background: #fff;
+}
+
+.btn-signup {
+  background: #5c5be5;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Hero Section - Exact Design */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  background: #fff;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+  .hero-content h1 {
+    font-size: 56px;
+    line-height: 1.1;
+    color: #0f172a;
+    margin-bottom: 20px;
+    font-weight: 800;
+  }
+
+.text-primary {
+  color: #5c5be5;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.btn-fill {
+  background: #5c5be5;
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-outline {
+  border: 1px solid #5c5be5;
+  color: #5c5be5;
+  background: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 550px;
+  border-radius: 32px;
+}
+
+.search-box {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+  .search-box input {
+    border: none;
+    width: 100%;
+    padding-left: 10px;
+    outline: none;
+  }
+
+/* Services Grid - 3 Column Layout */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Eh line cards nu 3 columns vich vandegi */
+  gap: 24px;
+  padding: 20px 0;
+}
+
+.service-card {
+  height: 350px; /* Card di height fix karo */
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Content thalle ayega */
+  overflow: hidden;
+  position: relative;
+}
+.card-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 30px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Icon te Text center karan layi */
+    align-items: center;
+}
+
+.logo {
+  max-width: 100%;
+  height: 80px;
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+/* Features & Testimonials */
+.features-grid, .testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+
+.testi-card {
+  background: #f8fafc;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: left;
+}
+
+/* CTA Banner - Linear Gradient like Image */
+.cta-banner {
+  background: linear-gradient(90deg, #5c5be5, #32d18d);
+  padding: 80px;
+  text-align: center;
+  color: white;
+}
+
+.btn-white {
+  background: white;
+  color: #5c5be5;
+  padding: 12px 30px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  background: #0f172a;
+  background: #0f172a;
+  color: #fff;
+  padding: 60px 10% 20px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-links h4 {
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.footer-links a {
+  display: block;
+  color: #94a3b8;
+  text-decoration: none;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
