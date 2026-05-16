@@ -3,14 +3,16 @@
     <div class="logo">
       <img class="logo" src="/logo.jpg" alt="DN Logo"> <span>Daily Needs</span>
     </div>
+
     <div class="nav-links">
-      <a href="#">Services</a>
-      <a href="#">How it Works</a>
+      <a style=" margin-left: 115px; " href="#">Services</a>
+      <a style=" margin-right: 105px; margin-left: 105px; " href="#">How it Works</a>
       <a href="#">Become a Pro</a>
     </div>
+
     <div class="nav-auth">
-      <button class="btn-login">Log In</button>
-      <button class="btn-signup">Sign Up</button>
+      <button type="button" class="btn-login" (click)="onLoginClick($event)">Log In</button>
+      <button type="button" class="btn-signup">Sign Up</button>
     </div>
   </nav>
 
@@ -49,22 +51,28 @@
       </div>
     </div>
   </section>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <section class="why-us">
     <h2 class="section-title">Why Choose Daily Needs</h2>
     <div class="features-grid">
       <div class="feature-card">
-        <div class="f-icon">🛡️</div>
+        <div class="feature-icon-box shield-grad">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
         <h4>Verified Professionals</h4>
         <p>All service providers are background-checked and verified.</p>
       </div>
       <div class="feature-card">
-        <div class="f-icon">⏱️</div>
+        <div class="feature-icon-box clock-grad">
+          <i class="fa-solid fa-clock"></i>
+        </div>
         <h4>Quick Response</h4>
         <p>Get matched with available professionals within minutes.</p>
       </div>
       <div class="feature-card">
-        <div class="f-icon">🏅</div>
+        <div class="feature-icon-box award-grad">
+          <i class="fa-solid fa-award"></i>
+        </div>
         <h4>Quality Guaranteed</h4>
         <p>100% satisfaction guarantee or your money back.</p>
       </div>
@@ -75,13 +83,19 @@
     <h2 class="section-title">What Our Customers Say</h2>
     <div class="testi-grid">
       <div class="testi-card" *ngFor="let t of testimonials">
-        <div class="stars">⭐⭐⭐⭐⭐</div>
-        <p>"{{t.feedback}}"</p>
+        <div class="stars">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <p class="feedback-text">"{{t.feedback}}"</p>
         <div class="user-info">
-          <div class="avatar"></div>
-          <div>
-            <strong>{{t.name}}</strong>
-            <small>{{t.role}}</small>
+          <img [src]="t.avatar || 'assets/default-avatar.png'" alt="{{t.name}}" class="avatar-img" />
+          <div class="user-meta">
+            <strong class="user-name">{{t.name}}</strong>
+            <span class="user-role">{{t.role}}</span>
           </div>
         </div>
       </div>
@@ -118,6 +132,6 @@
         <a href="#">Terms of Service</a>
       </div>
     </div>
-    <div class="copyright">© 2026 Daily Needs. All rights reserved.</div>
+    <div style="text-align: center; margin-top: 20px;" class="copyright">© 2026 Daily Needs. All rights reserved.</div>
   </footer>
 </div>

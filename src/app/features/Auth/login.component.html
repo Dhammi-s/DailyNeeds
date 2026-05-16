@@ -1,0 +1,25 @@
+<div class="login-container">
+  <div class="login-card">
+    <img src="/logo.jpg" alt="DN Logo" width="50">
+    <h2>Welcome Back</h2>
+    <p>Log in to your Daily Needs account</p>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" [(ngModel)]="loginData.email" placeholder="you@example.com">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="loginData.password" placeholder="********">
+    </div>
+    <div class="captcha-wrapper" style="margin-bottom: 1rem; display: flex; justify-content: center;">
+      <div class="g-recaptcha" [attr.data-sitekey]="siteKey"></div>
+    </div>
+    <button class="btn btn-user" (click)="onLogin('User')">Log In as User</button>
+    <button class="btn btn-worker" (click)="onLogin('Worker')">Log In as Worker</button>
+    <button class="btn btn-admin" (click)="onLogin('Admin')">Log In as Admin</button>
+
+    <p>Don't have an account? <a routerLink="/signup">Sign up</a></p>
+  </div>
+</div>

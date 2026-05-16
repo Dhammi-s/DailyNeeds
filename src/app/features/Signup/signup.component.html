@@ -1,0 +1,55 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="logo">DN</div>
+    <h2>Create Account</h2>
+    <p>Join Daily Needs today</p>
+
+    <div class="role-selector">
+      <button [class.active]="!isWorker" (click)="setRole('User')">I need services</button>
+      <button [class.active]="isWorker" (click)="setRole('Worker')">I'm a professional</button>
+    </div>
+
+    <form (ngSubmit)="onRegister()">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="Name" [(ngModel)]="registerData.Name" placeholder="John Doe" required>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" name="email" [(ngModel)]="registerData.email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" name="phone" [(ngModel)]="registerData.phoneNumber" placeholder="+1 (555) 000-0000">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" [(ngModel)]="registerData.password" placeholder="********" required>
+      </div>
+
+      <div class="form-group" *ngIf="isWorker">
+        <label>Service Category</label>
+        <select name="category" [(ngModel)]="registerData.serviceCategory">
+          <option value="">Select Category</option>
+          <option value="Electrician">Electrician</option>
+          <option value="Plumber">Plumber</option>
+          <option value="Carpenter">Carpenter</option>
+        </select>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="terms" required>
+        <label for="terms">I agree to the Terms of Service and Privacy Policy</label>
+      </div>
+
+      <button type="submit" [class]="isWorker ? 'btn-worker' : 'btn-user'">
+        Create Account
+      </button>
+    </form>
+
+    <p class="footer-text">Already have an account? <a routerLink="/login">Log in</a></p>
+  </div>
+</div>
