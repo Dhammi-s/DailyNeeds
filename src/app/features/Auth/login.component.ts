@@ -42,7 +42,6 @@ export class LoginComponent {
 
     this.authService.login(this.loginData, role).subscribe({
       next: (response) => {
-        // 1. Token te Role cookies vich save karo (1 din lyi)
         if (response.token) {
           this.cookieService.set('token', response.token, 1, '/');
           this.cookieService.set('userRole', role, 1, '/');

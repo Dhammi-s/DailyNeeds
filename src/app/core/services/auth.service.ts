@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service'; // 👈 Eh import check karo
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7046/api/auth';
+  private apiUrl = 'http://dailyneeds.runasp.net/api/auth';
 
   constructor(
     private http: HttpClient,

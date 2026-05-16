@@ -8,13 +8,16 @@ section {
   padding: 80px 10%;
 }
 
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 10%;
-  background: #fff;
+/* Buttons */
+.btn-login {
+  background: #29d458;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .btn-signup {
@@ -26,8 +29,47 @@ section {
   font-weight: 600;
   cursor: pointer;
 }
+/* Navbar settings layout */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+  background: #fff;
+  position: relative; /* Z-index chalane layi position relative zaroori hai */
+  z-index: 100; /* Sab ton upar rhan layi */
+}
 
-/* Hero Section - Exact Design */
+/* Auth Buttons Container */
+.nav-auth {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  z-index: 101; /* Layer nu elements ton upar kro */
+  pointer-events: auto !important; /* Click enable karan layi strict command */
+}
+
+/* Login button precise settings */
+.btn-login {
+  background: #29d458;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer; /* Check karo cursor hand (pointer) bnda hai ya nahi */
+  position: relative;
+  z-index: 102;
+  pointer-events: auto !important;
+}
+/* Navbar */
+
+.logo {
+  max-width: 100%;
+  height: 80px;
+}
+
+/* Hero Section */
 .hero {
   display: flex;
   align-items: center;
@@ -81,6 +123,7 @@ section {
   border-radius: 32px;
 }
 
+/* Search Box */
 .search-box {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -98,51 +141,69 @@ section {
     outline: none;
   }
 
-/* Services Grid - 3 Column Layout */
+/* Services Grid - Fixed Duplication */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Eh line cards nu 3 columns vich vandegi */
+  /* Responsive 3-column layout jo mobile te apne aap single column ho javega */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   padding: 20px 0;
 }
 
+/* Service Card Container */
 .service-card {
-  height: 350px; /* Card di height fix karo */
-  border-radius: 24px;
+  position: relative;
+  height: 250px; /* Card di fix height */
+  border-radius: 16px;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Overlay covering the entire card */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Bottom ton dark gradient taaki white text easily read ho sake */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.75));
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Content thalle ayega */
-  overflow: hidden;
-  position: relative;
-}
-.card-overlay {
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    padding: 30px;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Icon te Text center karan layi */
-    align-items: center;
+  align-items: center;
+  justify-content: center; /* Icons te text nu center karan layi */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.logo {
-  max-width: 100%;
-  height: 80px;
-}
-
+/* Icon Box Shape & Centering */
 .icon-box {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
+  width: 60px;
+  height: 60px;
+  border-radius: 14px; /* Perfectly rounded corners like Image 1 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+  /* Actual Icon inside the Box */
+  .icon-box i {
     font-size: 24px;
+    color: #ffffff; /* Icon hamesha white rahega */
+  }
+
+/* Card Heading Text - Added Missing Styles */
+.card-overlay h3 {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* Text readability vadhana layi */
 }
 
 /* Features & Testimonials */
@@ -153,14 +214,9 @@ section {
   text-align: center;
 }
 
-.testi-card {
-  background: #f8fafc;
-  padding: 30px;
-  border-radius: 20px;
-  text-align: left;
-}
 
-/* CTA Banner - Linear Gradient like Image */
+
+/* CTA Banner */
 .cta-banner {
   background: linear-gradient(90deg, #5c5be5, #32d18d);
   padding: 80px;
@@ -178,9 +234,8 @@ section {
   cursor: pointer;
 }
 
-/* Footer */
+/* Footer - Cleaned Duplicate Properties */
 .footer {
-  background: #0f172a;
   background: #0f172a;
   color: #fff;
   padding: 60px 10% 20px;
@@ -196,11 +251,167 @@ section {
   margin-bottom: 20px;
   color: #fff;
 }
-
+.icon-box i {
+  font-size: 24px !important; /* Size pakka karan layi */
+  color: #ffffff !important; /* Color white rhan layi */
+  display: inline-block;
+  line-height: 1;
+}
 .footer-links a {
   display: block;
   color: #94a3b8;
   text-decoration: none;
   margin-bottom: 10px;
   font-size: 14px;
+}
+/* Section Titles Shared Style */
+.section-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 50px;
+}
+
+/* --- WHY CHOOSE US SECTION --- */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Gradient Icon Containers */
+.feature-icon-box {
+  width: 65px;
+  height: 65px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+  .feature-icon-box i {
+    font-size: 26px;
+    color: #ffffff;
+  }
+
+/* Gradients Matching Image 2 */
+.shield-grad {
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+}
+
+.clock-grad {
+  background: linear-gradient(135deg, #3b82f6, #10b981);
+}
+
+.award-grad {
+  background: linear-gradient(135deg, #3b82f6, #10b981);
+}
+
+.feature-card h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 10px 0;
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 280px;
+}
+
+/* --- TESTIMONIALS SECTION --- */
+.testimonials {
+  background-color: #fafafa; /* Subtle light background for contrast */
+}
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testi-card {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #f1f5f9;
+  transition: transform 0.3s ease;
+}
+
+  .testi-card:hover {
+    transform: translateY(-5px);
+  }
+
+/* Purple Stars */
+.stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+  .stars i {
+    color: #5c5be5; /* Purple color stars */
+    font-size: 14px;
+  }
+
+.feedback-text {
+  font-size: 15px;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0 0 25px 0;
+  font-weight: 400;
+}
+
+/* User Profile Metadata Layout */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #e2e8f0;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.user-role {
+  font-size: 13px;
+  color: #64748b;
 }
