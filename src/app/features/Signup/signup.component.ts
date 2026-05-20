@@ -23,7 +23,7 @@ export class SignupComponent {
   };
 
   isWorker = false;
-  apiUrl = 'https://localhost:7046/api/auth/register';
+  apiUrl = 'http://dailyneeds.runasp.net/api/auth/register';
 
   constructor(
     private http: HttpClient,
