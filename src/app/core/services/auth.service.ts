@@ -1,38 +1,72 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service'; // 👈 Eh import check karo
+import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://dailyneeds.runasp.net/api/auth';
+
+  private apiUrl = 'https://localhost:7046/api/auth';
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService // 👈 CookieService inject kiti
+    private cookieService: CookieService
   ) { }
 
-  login(credentials: any, role: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { ...credentials, role }).pipe(
-      tap((res: any) => {
-        if (res.token) {
-          // LocalStorage khatam, hun sab Cookies vich jayega
-          // Parameters: (name, value, expires, path)
-          this.cookieService.set('token', res.token, 1, '/');
-          this.cookieService.set('userRole', role, 1, '/');
+  login(credentials: any): Observable<any> {
 
-          // Je backend ton user details vi aa rahiya ne
+    return this.http.post<any>(
+      `${this.apiUrl}/login`,
+      credentials
+    ).pipe(
+
+      tap((res: any) => {
+
+        if (res.token) {
+
+          // Save Token
+          this.cookieService.set(
+            'token',
+            res.token,
+            1,
+            '/'
+          );
+
+          // Decode JWT
+          const decodedToken: any = jwtDecode(res.token);
+
+          // Extract Role
+          const role =
+            decodedToken.role ||
+            decodedToken.Role ||
+            decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+          // Save Role
+          this.cookieService.set(
+            'userRole',
+            role,
+            1,
+            '/'
+          );
+
+          // Save User Info
           if (res.user) {
-            this.cookieService.set('userInfo', JSON.stringify(res.user), 1, '/');
+
+            this.cookieService.set(
+              'userInfo',
+              JSON.stringify(res.user),
+              1,
+              '/'
+            );
           }
         }
       })
     );
   }
 
-  // Cookies read karan lyi helper functions
   getToken(): string {
     return this.cookieService.get('token');
   }
@@ -41,10 +75,13 @@ export class AuthService {
     return this.cookieService.get('userRole');
   }
 
-  // Logout function cookies clear karan lyi
   logout() {
+
     this.cookieService.delete('token', '/');
     this.cookieService.delete('userRole', '/');
+    this.cookieService.delete('userInfo', '/');
+
     this.cookieService.deleteAll('/');
+
   }
 }

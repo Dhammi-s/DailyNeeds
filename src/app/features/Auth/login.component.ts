@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; // 👈 Toastr import karo
-import { CookieService } from 'ngx-cookie-service'; // 👈 Cookie import karo
+import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
 
 declare var grecaptcha: any;
 
@@ -15,52 +16,116 @@ declare var grecaptcha: any;
   imports: [FormsModule]
 })
 export class LoginComponent {
+
   loginData = {
     email: '',
     password: '',
     captcha: ''
   };
+  siteKey = '6Le-7PUsAAAAAC_YFwIMYZHi6Rez4G4dC5qnpr8D'; // prod key
 
-  siteKey = '6Lfi83ksAAAAADNkjVJ8JftlWyrugROii4xgvuYK';
+  //siteKey = '6Lfi83ksAAAAADNkjVJ8JftlWyrugROii4xgvuYK';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService, // 👈 Inject karo
-    private cookieService: CookieService // 👈 Inject karo
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) { }
 
-  onLogin(role: 'User' | 'Worker' | 'Admin') {
+  onLogin() {
+
     const captchaResponse = grecaptcha.getResponse();
 
     if (!captchaResponse) {
-      this.toastr.warning('Please complete the Captcha first!', 'Captcha Required');
+
+      this.toastr.warning(
+        'Please complete the Captcha first!',
+        'Captcha Required'
+      );
+
       return;
     }
 
     this.loginData.captcha = captchaResponse;
 
-    this.authService.login(this.loginData, role).subscribe({
+    this.authService.login(this.loginData).subscribe({
+
       next: (response) => {
+
         if (response.token) {
-          this.cookieService.set('token', response.token, 1, '/');
-          this.cookieService.set('userRole', role, 1, '/');
 
-          this.toastr.success(`Welcome back, ${role}!`, 'Login Successful');
+          // Save Token
+          this.cookieService.set(
+            'token',
+            response.token,
+            1,
+            '/'
+          );
 
-          // 2. Role de hisab naal redirect karo
-          if (role === 'Admin') this.router.navigate(['/admin-dashboard']);
-          else if (role === 'Worker') this.router.navigate(['/worker-dashboard']);
-          else this.router.navigate(['/jassa']);
+          // Decode Token
+          const decodedToken: any = jwtDecode(response.token);
+
+          console.log(decodedToken);
+
+          // Extract Role
+          const role =
+            decodedToken.role ||
+            decodedToken.Role ||
+            decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+          // Save Role
+          this.cookieService.set(
+            'userRole',
+            role,
+            1,
+            '/'
+          );
+
+          this.toastr.success(
+            `Welcome back, ${role}!`,
+            'Login Successful'
+          );
+
+          // Redirect by Role
+          if (role === 'Admin') {
+
+            this.router.navigate(['/admin-dashboard']);
+
+          }
+          else if (role === 'Worker') {
+
+            this.router.navigate(['/worker-dashboard']);
+
+          }
+          else if (role === 'User') {
+
+            this.router.navigate(['/dashboard']);
+
+          }
+          else {
+
+            this.toastr.error(
+              'Invalid role found in token',
+              'Access Denied'
+            );
+          }
         }
       },
-      error: (err) => {
-        console.error('Login failed', err);
-        // Error handling with Toaster
-        const errorMsg = err.error?.message || 'Invalid Email or Password';
-        this.toastr.error(errorMsg, 'Login Failed');
 
-        // Reset captcha on failure
+      error: (err) => {
+
+        console.error('Login failed', err);
+
+        const errorMsg =
+          err.error?.message ||
+          'Invalid Email or Password';
+
+        this.toastr.error(
+          errorMsg,
+          'Login Failed'
+        );
+
         grecaptcha.reset();
       }
     });
