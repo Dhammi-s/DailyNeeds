@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService {
 
-  private apiUrl = 'https://localhost:7046/api/auth';
+  private apiUrl = 'https://dailyneedsbackend.runasp.net/api/auth/login';
 
   constructor(
     private http: HttpClient,
