@@ -5,7 +5,7 @@ import { SignupComponent } from './features/Signup/signup.component';
 import { DashboardManager } from './features/UserPortalPages/dashboard';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },  // URL: http://localhost:4200/login
+  { path: '', component: LoginComponent },  // URL: http://localhost:4200/login
   { path: 'home', component: HomeComponent },    // URL: http://localhost:4200/home
   { path: 'jassa', component: HomeComponent },   // URL: http://localhost:4200/jassa
   { path: 'signup', component: SignupComponent },
