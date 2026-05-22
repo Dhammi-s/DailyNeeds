@@ -1,0 +1,167 @@
+<div class="dashboard-container">
+  <!-- Shared Navigation Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-section">
+      <div class="logo-icon">DN</div>
+      <span class="logo-text">Daily Needs</span>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item" href="/worker-dashboard"><i class="icon-dashboard"></i> Dashboard</a>
+      <a class="nav-item"><i class="icon-jobs"></i> Jobs</a>
+      <a class="nav-item"><i class="icon-schedule"></i> Schedule</a>
+      <a class="nav-item"><i class="icon-earnings"></i> Earnings</a>
+      <a class="nav-item active"><i class="icon-profile"></i> Profile</a>
+    </nav>
+
+    <div class="logout-section">
+      <button class="btn-logout"><i class="icon-logout"></i> Log Out</button>
+    </div>
+  </aside>
+
+  <!-- Profile Edit Workspace Canvas -->
+  <main class="main-content">
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" style="padding: 2rem; text-align: center;">
+      <p>Loading profile...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage" style="padding: 2rem; color: red;">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <ng-container *ngIf="!isLoading && profileData">
+      <header class="header-section">
+      <h1>Professional Profile</h1>
+    </header>
+
+    <form (ngSubmit)="onSaveChanges()" #profileForm="ngForm">
+
+      <!-- Profile Photo Upload Card Layout -->
+      <section class="profile-card-block">
+        <h3>Profile Photo</h3>
+        <div class="photo-upload-row">
+          <!-- Render static placeholder when profileImageBase64 is null, else render source binary safely -->
+          <img [src]="profileData.profileImageBase64 ? profileData.profileImageBase64 : 'assets/default-avatar.png'" alt="Worker Avatar" class="profile-avatar-preview" />
+          <div class="upload-controls">
+            <button type="button" class="btn btn-success-upload" (click)="fileInput.click()">Upload New Photo</button>
+            <input #fileInput type="file" (change)="onAvatarUpload($event)" accept="image/*" style="display: none;" />
+            <p class="upload-hint">JPG, PNG or GIF. Max 5MB.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Personal Information Layout Section -->
+      <section class="profile-card-block">
+        <h3>Personal Information</h3>
+        <div class="form-grid-two-col">
+          <div class="input-group-wrapper">
+            <label><i class="icon-user"></i> Full Name</label>
+            <input type="text" [(ngModel)]="profileData.name" name="name" required class="form-control-input" />
+          </div>
+          <div class="input-group-wrapper">
+            <label><i class="icon-mail"></i> Email Address</label>
+            <input type="email" [(ngModel)]="profileData.email" name="email" required readonly class="form-control-input text-disabled" />
+          </div>
+          <div class="input-group-wrapper">
+            <label><i class="icon-phone"></i> Phone Number</label>
+            <input type="text" [(ngModel)]="profileData.phoneNumber" name="phoneNumber" required class="form-control-input" />
+          </div>
+          <div class="input-group-wrapper">
+            <label><i class="icon-map"></i> Service Area</label>
+            <input type="text" [(ngModel)]="profileData.serviceArea" name="serviceArea" placeholder="e.g. San Francisco, CA" class="form-control-input" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Professional Details & Rates Block Layout -->
+      <section class="profile-card-block">
+        <h3>Professional Details</h3>
+        <div class="form-single-col-stack">
+          <div class="input-group-wrapper">
+            <label>Bio / Professional Summary</label>
+            <textarea [(ngModel)]="profileData.bio" name="bio" placeholder="Write a short summary about your services..." class="form-control-textarea" rows="3"></textarea>
+          </div>
+          <div class="form-grid-two-col margin-top-row">
+            <div class="input-group-wrapper">
+              <label><i class="icon-dollar"></i> Hourly Rate ($)</label>
+              <input type="number" [(ngModel)]="profileData.hourlyRate" name="hourlyRate" required class="form-control-input" />
+            </div>
+            <div class="input-group-wrapper">
+              <label><i class="icon-badge"></i> Years of Experience</label>
+              <input type="number" [(ngModel)]="profileData.experienceYears" name="experienceYears" required class="form-control-input" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Skills Arrays Cloud Node Blocks -->
+      <section class="profile-card-block">
+        <h3>Skills & Services</h3>
+        <div class="skills-tags-cloud-container">
+          <span class="skill-interactive-badge" *ngFor="let skill of profileData.skills; let idx = index">
+            {{ skill }}
+            <button type="button" class="btn-remove-tag" (click)="removeSkillTag(idx)">×</button>
+          </span>
+          <div class="inline-add-skill-control">
+            <input type="text" #newSkillInput placeholder="Enter skill" class="form-control-input inline-skill-field" (keyup.enter)="addSkillTag(newSkillInput)" />
+            <button type="button" class="btn btn-add-skill-trigger" (click)="addSkillTag(newSkillInput)">+ Add Skill</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Weekly Schedule Availability List Generator Matrix -->
+      <section class="profile-card-block">
+        <h3>Availability</h3>
+        <div class="availability-schedule-rows-stack">
+          <div class="day-scheduler-row" *ngFor="let entry of profileData.availability">
+            <div class="day-checkbox-label-block">
+              <input type="checkbox" [(ngModel)]="entry.isAvailable" [name]="entry.dayOfWeek + '_checked'" class="custom-form-checkbox" />
+              <span class="day-text-label">{{ entry.dayOfWeek }}</span>
+            </div>
+            <div class="time-picker-controls-block" *ngIf="entry.isAvailable">
+              <input type="time" [(ngModel)]="entry.startTime" [name]="entry.dayOfWeek + '_from'" class="form-control-input select-time-node" />
+              <span class="connector-label-txt">to</span>
+              <input type="time" [(ngModel)]="entry.endTime" [name]="entry.dayOfWeek + '_to'" class="form-control-input select-time-node" />
+            </div>
+            <div class="time-picker-controls-block text-placeholder-muted" *ngIf="!entry.isAvailable">
+              <span>Unavailable</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certifications & Licenses List Layout Section -->
+      <section class="profile-card-block">
+        <h3>Certifications & Licenses</h3>
+        <div class="certifications-listed-group">
+          <div class="certification-item-box-row" *ngFor="let cert of profileData.certificates; let cIdx = index">
+            <div class="cert-details-meta">
+              <h4>{{ cert.certificateName }}</h4>
+              <p *ngIf="cert.expirationDate">Expires: {{ cert.expirationDate }}</p>
+            </div>
+            <button type="button" class="btn-inline-text-edit-danger" (click)="removeCertificate(cIdx)">Remove</button>
+          </div>
+
+          <!-- Inline New Certificate Submission Block Component Form Rows -->
+          <div class="add-certificate-inline-form margin-top-row">
+            <input type="text" #certTitle placeholder="Certificate Name (e.g. Certified Electrician)" class="form-control-input" />
+            <button type="button" class="btn btn-outline-dashed-action margin-top-sm" (click)="addCertificateNode(certTitle)">
+              + Push Certificate to List
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Master Control Bottom Processing Controls Bar -->
+      <footer class="form-master-actions-sticky-bar">
+        <button type="submit" [disabled]="!profileForm.form.valid" class="btn btn-master-submit">Save Changes</button>
+        <button type="button" class="btn btn-master-cancel" (click)="resetForm()">Cancel</button>
+      </footer>
+
+    </form>
+    </ng-container>
+  </main>
+</div>

@@ -1,0 +1,151 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="logo-section">
+      <div class="logo-icon">DN</div>
+      <span class="logo-text">Daily Needs</span>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active"><i class="icon-dashboard"></i> Dashboard</a>
+      <a class="nav-item"><i class="icon-jobs"></i> Jobs</a>
+      <a class="nav-item"><i class="icon-schedule"></i> Schedule</a>
+      <a class="nav-item"><i class="icon-earnings"></i> Earnings</a>
+      <a class="nav-item"><i class="icon-profile"></i> Profile</a>
+    </nav>
+
+    <div class="logout-section">
+      <button class="btn-logout"><i class="icon-logout"></i> Log Out</button>
+    </div>
+  </aside>
+
+  <main class="main-content" *ngIf="dashboardData">
+    <header class="header-section">
+      <h1>Welcome back, {{ dashboardData.workerName }}!</h1>
+      <p>Here's your performance today</p>
+    </header>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="card-header">
+          <div class="icon-wrapper icon-green">
+            <span class="material-icons">$</span>
+          </div>
+          <span class="badge positive">{{ dashboardData.stats.earningsChange }}</span>
+        </div>
+        <div class="card-body">
+          <h2>{{ dashboardData.stats.todayEarnings | currency:'USD':'symbol':'1.0-0' }}</h2>
+          <p>Today's Earnings</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-header">
+          <div class="icon-wrapper icon-blue">
+            <span class="material-icons">work</span>
+          </div>
+          <span class="badge neutral">{{ dashboardData.stats.activeJobsChange }}</span>
+        </div>
+        <div class="card-body">
+          <h2>{{ dashboardData.stats.activeJobsCount }}</h2>
+          <p>Active Jobs</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-header">
+          <div class="icon-wrapper icon-orange">
+            <span class="material-icons">star</span>
+          </div>
+          <span class="badge positive">{{ dashboardData.stats.ratingChange }}</span>
+        </div>
+        <div class="card-body">
+          <h2>{{ dashboardData.stats.rating | number:'1.1-1' }}</h2>
+          <p>Rating</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-header">
+          <div class="icon-wrapper icon-purple">
+            <span class="material-icons">trending_up</span>
+          </div>
+          <span class="badge positive">{{ dashboardData.stats.monthEarningsChange }}</span>
+        </div>
+        <div class="card-body">
+          <h2>{{ dashboardData.stats.monthEarnings | currency:'USD':'symbol':'1.0-0' }}</h2>
+          <p>This Month</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <h3>Active Jobs</h3>
+      <div class="active-job-card" *ngFor="let job of dashboardData.activeJobs">
+        <div class="job-header">
+          <div class="user-info">
+            <img [src]="job.avatar" alt="Avatar" class="avatar" />
+            <div>
+              <h4>{{ job.customerName }}</h4>
+              <p class="subtitle">{{ job.serviceType }}</p>
+            </div>
+          </div>
+          <span class="status-indicator">On the way</span>
+        </div>
+
+        <div class="job-details">
+          <span><i class="icon-clock"></i> {{ job.time }}</span>
+          <span><i class="icon-location"></i> {{ job.address }}</span>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-labels">
+            <span class="label">Job Progress</span>
+            <span class="value">{{ job.progress }}%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" [style.width.%]="job.progress"></div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-primary" (click)="onUpdateStatus(job)">Update Status</button>
+          <button class="btn btn-outline">Contact Customer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-header-row">
+        <h3>Pending Requests</h3>
+        <a class="view-all">View All</a>
+      </div>
+
+      <div class="pending-grid">
+        <div class="pending-card" *ngFor="let request of dashboardData.pendingRequests">
+          <div class="card-top">
+            <div class="user-info">
+              <img [src]="request.avatar" alt="Avatar" class="avatar" />
+              <div>
+                <h4>{{ request.customerName }}</h4>
+                <p class="subtitle">{{ request.serviceType }}</p>
+              </div>
+            </div>
+            <span class="price-tag">{{ request.price | currency:'USD':'symbol':'1.0-0' }}</span>
+          </div>
+
+          <div class="job-details-stacked">
+            <p><i class="icon-clock"></i> {{ request.time }}</p>
+            <p><i class="icon-location"></i> {{ request.address }}</p>
+          </div>
+
+          <div class="action-split-buttons">
+            <button class="btn btn-success" (click)="onAcceptRequest(request)">
+              <span class="icon-check">✓</span> Accept
+            </button>
+            <button class="btn btn-outline-danger" (click)="onDeclineRequest(request)">Decline</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
