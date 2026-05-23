@@ -44,8 +44,7 @@
         <h3>Profile Photo</h3>
         <div class="photo-upload-row">
           <!-- Render static placeholder when profileImageBase64 is null, else render source binary safely -->
-          <img [src]="profileData.profileImageBase64 ? profileData.profileImageBase64 : 'assets/default-avatar.png'" alt="Worker Avatar" class="profile-avatar-preview" />
-          <div class="upload-controls">
+          <img [src]="(profileData.profileImageBase64 && profileData.profileImageBase64 !== 'string') ? profileData.profileImageBase64 : 'assets/default-avatar.png'" alt="Worker Avatar" class="profile-avatar-preview" />          <div class="upload-controls">
             <button type="button" class="btn btn-success-upload" (click)="fileInput.click()">Upload New Photo</button>
             <input #fileInput type="file" (change)="onAvatarUpload($event)" accept="image/*" style="display: none;" />
             <p class="upload-hint">JPG, PNG or GIF. Max 5MB.</p>

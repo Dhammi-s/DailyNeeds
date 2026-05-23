@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common'; // <-- Add DatePipe here explicitly
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -8,7 +8,7 @@ import { WorkerProfile, AvailabilityDay, Certificate, Skill } from './profile.mo
 @Component({
   selector: 'app-worker-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DatePipe], // <-- Include DatePipe here
   templateUrl: './worker-profile.component.html',
   styleUrls: ['./worker-profile.component.scss']
 })
@@ -37,13 +37,18 @@ export class WorkerProfileComponent implements OnInit {
   loadWorkerProfile(): void {
     this.isLoading = true;
     this.errorMessage = null;
-    console.log('Calling API: Worker/' + this.workerId);
-    // Route matching your endpoint schema: Worker/{id}
+
     this.apiService.get(`Worker/${this.workerId}`).subscribe({
       next: (data: any) => {
-        console.log('API Response:', data);
         this.isLoading = false;
-        this.profileData = data as WorkerProfile;
+
+        // Defensive data assignment: enforces fallbacks so loops don't break
+        this.profileData = {
+          ...data,
+          skills: data.skills || [],
+          certificates: data.certificates || [],
+          availability: data.availability || []
+        };
       },
       error: (err: any) => {
         this.isLoading = false;
