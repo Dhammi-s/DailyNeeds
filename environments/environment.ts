@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://dailyneedsbackend.runasp.net'
+  apiUrl: 'https://dailyneedsbackend.runasp.net/api'
 };
