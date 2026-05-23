@@ -27,7 +27,7 @@ export class WorkerDashboardComponent implements OnInit {
   }
 
   loadDashboard(): void {
-    this.apiService.get(`worker/${this.currentWorkerId}/dashboard`).subscribe({
+    this.apiService.get(`worker/${this.currentWorkerId}`).subscribe({
       next: (data: any) => {
         this.dashboardData = data as DashboardData;
       },
