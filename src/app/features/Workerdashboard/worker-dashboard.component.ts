@@ -1,23 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // 👈 1. Eh import add karo
+import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
+import { AuthService } from '../../core/services/auth.service';
 import { DashboardData, Job } from './worker-dashboard.model';
 
 @Component({
   selector: 'app-worker-dashboard',
-  standalone: true, // 👈 Je standalone true ae
-  imports: [CommonModule], // 👈 2. imports array vich CommonModule pao
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './worker-dashboard.component.html',
   styleUrls: ['./worker-dashboard.component.scss']
 })
 export class WorkerDashboardComponent implements OnInit {
   dashboardData!: DashboardData;
-  currentWorkerId: string = 'worker_john_01';
+  currentWorkerId: string | null = null;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.loadDashboard();
+    this.currentWorkerId = this.authService.getUserIdFromToken();
+    if (this.currentWorkerId) {
+      this.loadDashboard();
+    } else {
+      console.error('Worker ID not found. Please login again.');
+    }
   }
 
   loadDashboard(): void {

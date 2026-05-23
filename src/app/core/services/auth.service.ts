@@ -17,9 +17,11 @@ export class AuthService {
   ) { }
 
   getUserIdFromToken(): string | null {
-    const token = this.getToken();
+    // First: try direct userId cookie saved at login
+    const directUserId = this.cookieService.get('userId');
+    if (directUserId) return directUserId;
 
-    // Fallback: try userInfo cookie first (stored at login)
+    // Fallback: try userInfo cookie
     const userInfo = this.cookieService.get('userInfo');
     if (userInfo) {
       try {
@@ -28,6 +30,8 @@ export class AuthService {
       } catch { }
     }
 
+    // Fallback: decode JWT token
+    const token = this.getToken();
     if (!token) return null;
 
     try {
@@ -77,6 +81,7 @@ export class AuthService {
     this.cookieService.delete('token', '/');
     this.cookieService.delete('userRole', '/');
     this.cookieService.delete('userInfo', '/');
+    this.cookieService.delete('userId', '/');
     this.cookieService.deleteAll('/');
   }
 }

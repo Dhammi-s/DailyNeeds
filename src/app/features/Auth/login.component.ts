@@ -68,6 +68,19 @@ export class LoginComponent {
 
           console.log(decodedToken);
 
+          // Extract UserId
+          const userId =
+            decodedToken.userId ||
+            decodedToken.id ||
+            decodedToken.sub ||
+            decodedToken.nameid ||
+            decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+
+          // Save UserId
+          if (userId) {
+            this.cookieService.set('userId', userId, 1, '/');
+          }
+
           // Extract Role
           const role =
             decodedToken.role ||
