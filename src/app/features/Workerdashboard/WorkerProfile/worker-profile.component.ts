@@ -25,12 +25,13 @@ export class WorkerProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.workerId = this.authService.getUserIdFromToken();
-    console.log('WorkerId from token:', this.workerId);
+    console.log('WorkerId:', this.workerId);
+    console.log('Token:', this.authService.getToken() ? 'exists' : 'MISSING');
     if (this.workerId) {
       this.loadWorkerProfile();
     } else {
+      this.isLoading = false;
       this.errorMessage = 'Session expired or token invalid. Please login again.';
-      console.error('Session Token context error: userId extraction failed.');
     }
   }
 

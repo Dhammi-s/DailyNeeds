@@ -17,20 +17,11 @@ export class AuthService {
   ) { }
 
   getUserIdFromToken(): string | null {
-    // First: try direct userId cookie saved at login
-    const directUserId = this.cookieService.get('userId');
-    if (directUserId) return directUserId;
+    // First: try localStorage (most reliable)
+    const localUserId = localStorage.getItem('userId');
+    if (localUserId) return localUserId;
 
-    // Fallback: try userInfo cookie
-    const userInfo = this.cookieService.get('userInfo');
-    if (userInfo) {
-      try {
-        const parsed = JSON.parse(userInfo);
-        if (parsed.userId) return parsed.userId;
-      } catch { }
-    }
-
-    // Fallback: decode JWT token
+    // Fallback: decode JWT token directly
     const token = this.getToken();
     if (!token) return null;
 
@@ -38,12 +29,17 @@ export class AuthService {
       const decodedToken: any = jwtDecode(token);
       console.log('Decoded token claims:', decodedToken);
 
-      return decodedToken.userId ||
+      const userId = decodedToken.userId ||
         decodedToken.id ||
         decodedToken.sub ||
         decodedToken.nameid ||
         decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ||
         null;
+
+      // Cache it in localStorage for next time
+      if (userId) localStorage.setItem('userId', userId);
+
+      return userId;
     } catch (error) {
       console.error('Error decoding JWT Token:', error);
       return null;
@@ -81,7 +77,7 @@ export class AuthService {
     this.cookieService.delete('token', '/');
     this.cookieService.delete('userRole', '/');
     this.cookieService.delete('userInfo', '/');
-    this.cookieService.delete('userId', '/');
     this.cookieService.deleteAll('/');
+    localStorage.removeItem('userId');
   }
 }

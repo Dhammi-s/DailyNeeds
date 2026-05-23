@@ -76,9 +76,9 @@ export class LoginComponent {
             decodedToken.nameid ||
             decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-          // Save UserId
+          // Save UserId to localStorage (reliable across navigation)
           if (userId) {
-            this.cookieService.set('userId', userId, 1, '/');
+            localStorage.setItem('userId', userId);
           }
 
           // Extract Role
