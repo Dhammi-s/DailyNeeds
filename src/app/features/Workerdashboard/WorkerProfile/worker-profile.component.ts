@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common'; // <-- Add DatePipe here explicitly
+import { Component, OnInit, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -12,7 +12,7 @@ import { WorkerProfile, AvailabilityDay, Certificate, Skill } from './profile.mo
   templateUrl: './worker-profile.component.html',
   styleUrls: ['./worker-profile.component.scss']
 })
-export class WorkerProfileComponent implements OnInit {
+export class WorkerProfileComponent implements OnInit, AfterViewInit {
   profileData!: WorkerProfile;
   workerId: string | null = null;
   isLoading: boolean = false;
@@ -20,13 +20,22 @@ export class WorkerProfileComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
+    // ngOnInit runs on server too — skip all browser-only logic here
+  }
+
+  ngAfterViewInit(): void {
+    // Runs only in browser after hydration
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.workerId = this.authService.getUserIdFromToken();
     console.log('WorkerId:', this.workerId);
     console.log('Token:', this.authService.getToken() ? 'exists' : 'MISSING');
+
     if (this.workerId) {
       this.loadWorkerProfile();
     } else {

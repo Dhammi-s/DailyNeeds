@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { authInterceptor } from './core/services/interceptor.service';
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideBrowserGlobalErrorListeners(),
     CookieService,
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideRouter(routes), provideClientHydration(withEventReplay())
   ]
 };

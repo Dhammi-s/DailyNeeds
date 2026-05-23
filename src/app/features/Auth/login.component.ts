@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +31,8 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   onLogin() {
@@ -77,7 +79,7 @@ export class LoginComponent {
             decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
           // Save UserId to localStorage (reliable across navigation)
-          if (userId) {
+          if (userId && isPlatformBrowser(this.platformId)) {
             localStorage.setItem('userId', userId);
           }
 

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,12 +14,15 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   getUserIdFromToken(): string | null {
-    // First: try localStorage (most reliable)
-    const localUserId = localStorage.getItem('userId');
+    if (!isPlatformBrowser(this.platformId)) return null;
+
+    // First: try localStorage (most reliable)    const localUserId = localStorage.getItem('userId');
+
     if (localUserId) return localUserId;
 
     // Fallback: decode JWT token directly
@@ -79,6 +83,8 @@ export class AuthService {
     this.cookieService.delete('userRole', '/');
     this.cookieService.delete('userInfo', '/');
     this.cookieService.deleteAll('/');
-    localStorage.removeItem('userId');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('userId');
+    }
   }
 }
