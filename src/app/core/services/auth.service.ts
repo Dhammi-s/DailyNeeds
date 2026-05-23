@@ -21,7 +21,8 @@ export class AuthService {
   getUserIdFromToken(): string | null {
     if (!isPlatformBrowser(this.platformId)) return null;
 
-    // First: try localStorage (most reliable)    const localUserId = localStorage.getItem('userId');
+    // First: try localStorage (most reliable)
+    const localUserId = localStorage.getItem('userId');
 
     if (localUserId) return localUserId;
 
