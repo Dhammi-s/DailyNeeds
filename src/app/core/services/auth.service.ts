@@ -61,6 +61,7 @@ export class AuthService {
             this.cookieService.set('userInfo', JSON.stringify({ userId: res.userId }), 1, '/');
           }
         }
+
       })
     );
   }
