@@ -35,6 +35,7 @@ export class WorkerProfileComponent implements OnInit {
     }
   }
 
+
   loadWorkerProfile(): void {
     this.isLoading = true;
     this.errorMessage = null;
