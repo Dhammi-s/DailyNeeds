@@ -22,7 +22,7 @@ export class LoginComponent {
     password: '',
     captcha: ''
   };
-  siteKey = '6Le-7PUsAAAAAC_YFwIMYZHi6Rez4G4dC5qnpr8D'; // prod key
+  siteKey = '6Le4ufgsAAAAABEABRBzF6kfxacUKqU9URXng65V'; // prod key
 
   //siteKey = '6Lfi83ksAAAAADNkjVJ8JftlWyrugROii4xgvuYK';
 
