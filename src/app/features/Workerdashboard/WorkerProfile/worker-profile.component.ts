@@ -24,9 +24,7 @@ export class WorkerProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Exact same Cookie token verification parsing technique matching your auth module system state 
     this.workerId = this.authService.getUserIdFromToken();
-
     console.log('WorkerId from token:', this.workerId);
     if (this.workerId) {
       this.loadWorkerProfile();

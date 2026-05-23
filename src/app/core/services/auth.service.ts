@@ -16,17 +16,28 @@ export class AuthService {
     private cookieService: CookieService
   ) { }
 
-  // 🔴 NAVA METHOD: Token vicho userId kadhan lyi
   getUserIdFromToken(): string | null {
     const token = this.getToken();
+
+    // Fallback: try userInfo cookie first (stored at login)
+    const userInfo = this.cookieService.get('userInfo');
+    if (userInfo) {
+      try {
+        const parsed = JSON.parse(userInfo);
+        if (parsed.userId) return parsed.userId;
+      } catch { }
+    }
+
     if (!token) return null;
 
     try {
       const decodedToken: any = jwtDecode(token);
+      console.log('Decoded token claims:', decodedToken);
 
-      // Microsoft Core standard claim type checking ya normal generic name checking
       return decodedToken.userId ||
         decodedToken.id ||
+        decodedToken.sub ||
+        decodedToken.nameid ||
         decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ||
         null;
     } catch (error) {
@@ -46,6 +57,8 @@ export class AuthService {
 
           if (res.user) {
             this.cookieService.set('userInfo', JSON.stringify(res.user), 1, '/');
+          } else if (res.userId) {
+            this.cookieService.set('userInfo', JSON.stringify({ userId: res.userId }), 1, '/');
           }
         }
       })
