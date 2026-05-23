@@ -1,18 +1,21 @@
 export interface AvailabilityDay {
-  id?: number;
-  dayOfWeek: string; // "Monday", "Tuesday", etc.
-  startTime: string;  // "09:00"
-  endTime: string;    // "17:00"
+  id?: string;
+  availableDate: string;
+  timeSlotId?: string;
   isAvailable: boolean;
 }
 
+export interface Skill {
+  serviceId?: string;
+  serviceName: string;
+  experienceYears?: number;
+}
+
 export interface Certificate {
-  id?: number;
+  id?: string;
   certificateName: string;
-  issuingOrganization?: string;
-  issueDate?: string;
-  expirationDate?: string;
-  credentialUrl?: string;
+  certificateFileBase64?: string | null;
+  expiryDate?: string;
 }
 
 export interface WorkerProfile {
@@ -25,7 +28,7 @@ export interface WorkerProfile {
   hourlyRate: number;
   experienceYears: number;
   serviceArea: string | null;
-  skills: string[];
+  skills: Skill[];
   certificates: Certificate[];
   availability: AvailabilityDay[];
 }

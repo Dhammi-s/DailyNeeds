@@ -102,7 +102,7 @@
         <h3>Skills & Services</h3>
         <div class="skills-tags-cloud-container">
           <span class="skill-interactive-badge" *ngFor="let skill of profileData.skills; let idx = index">
-            {{ skill }}
+            {{ skill.serviceName }}
             <button type="button" class="btn-remove-tag" (click)="removeSkillTag(idx)">×</button>
           </span>
           <div class="inline-add-skill-control">
@@ -116,15 +116,10 @@
       <section class="profile-card-block">
         <h3>Availability</h3>
         <div class="availability-schedule-rows-stack">
-          <div class="day-scheduler-row" *ngFor="let entry of profileData.availability">
+          <div class="day-scheduler-row" *ngFor="let entry of profileData.availability; let i = index">
             <div class="day-checkbox-label-block">
-              <input type="checkbox" [(ngModel)]="entry.isAvailable" [name]="entry.dayOfWeek + '_checked'" class="custom-form-checkbox" />
-              <span class="day-text-label">{{ entry.dayOfWeek }}</span>
-            </div>
-            <div class="time-picker-controls-block" *ngIf="entry.isAvailable">
-              <input type="time" [(ngModel)]="entry.startTime" [name]="entry.dayOfWeek + '_from'" class="form-control-input select-time-node" />
-              <span class="connector-label-txt">to</span>
-              <input type="time" [(ngModel)]="entry.endTime" [name]="entry.dayOfWeek + '_to'" class="form-control-input select-time-node" />
+              <input type="checkbox" [(ngModel)]="entry.isAvailable" [name]="'avail_checked_' + i" class="custom-form-checkbox" />
+              <span class="day-text-label">{{ entry.availableDate | date:'mediumDate' }}</span>
             </div>
             <div class="time-picker-controls-block text-placeholder-muted" *ngIf="!entry.isAvailable">
               <span>Unavailable</span>
@@ -140,7 +135,7 @@
           <div class="certification-item-box-row" *ngFor="let cert of profileData.certificates; let cIdx = index">
             <div class="cert-details-meta">
               <h4>{{ cert.certificateName }}</h4>
-              <p *ngIf="cert.expirationDate">Expires: {{ cert.expirationDate }}</p>
+              <p *ngIf="cert.expiryDate">Expires: {{ cert.expiryDate | date:'mediumDate' }}</p>
             </div>
             <button type="button" class="btn-inline-text-edit-danger" (click)="removeCertificate(cIdx)">Remove</button>
           </div>

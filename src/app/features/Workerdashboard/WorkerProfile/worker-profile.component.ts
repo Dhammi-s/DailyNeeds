@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { WorkerProfile, AvailabilityDay, Certificate } from './profile.model';
+import { WorkerProfile, AvailabilityDay, Certificate, Skill } from './profile.model';
 
 @Component({
   selector: 'app-worker-profile',
@@ -17,9 +17,6 @@ export class WorkerProfileComponent implements OnInit {
   workerId: string | null = null;
   isLoading: boolean = false;
   errorMessage: string | null = null;
-
-  // Standard boilerplate scheduler structure definitions to fallback safely when backend availability lists return empty array
-  private defaultDays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   constructor(
     private apiService: ApiService,
@@ -49,16 +46,6 @@ export class WorkerProfileComponent implements OnInit {
         console.log('API Response:', data);
         this.isLoading = false;
         this.profileData = data as WorkerProfile;
-
-        // Safety Fallback Check: Aggressively populate structure array blocks when availability elements are missing or empty strings from API array tracking nodes
-        if (!this.profileData.availability || this.profileData.availability.length === 0) {
-          this.profileData.availability = this.defaultDays.map((day: string) => ({
-            dayOfWeek: day,
-            startTime: '09:00',
-            endTime: '17:00',
-            isAvailable: false
-          }));
-        }
       },
       error: (err: any) => {
         this.isLoading = false;
@@ -70,8 +57,8 @@ export class WorkerProfileComponent implements OnInit {
 
   addSkillTag(inputElement: HTMLInputElement): void {
     const value = inputElement.value.trim();
-    if (value && !this.profileData.skills.includes(value)) {
-      this.profileData.skills.push(value);
+    if (value && !this.profileData.skills.find(s => s.serviceName === value)) {
+      this.profileData.skills.push({ serviceName: value });
       inputElement.value = '';
     }
   }
@@ -84,8 +71,7 @@ export class WorkerProfileComponent implements OnInit {
     const title = titleInput.value.trim();
     if (title) {
       const newCert: Certificate = {
-        certificateName: title,
-        expirationDate: ''
+        certificateName: title
       };
       this.profileData.certificates.push(newCert);
       titleInput.value = '';
